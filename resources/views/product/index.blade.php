@@ -1,29 +1,44 @@
-@extends('layout')
+@extends('layoutadmin')
+@section('title')
+    Danh sách sản phẩm
+@endsection
 @section('content')
-
-<div class="container p-3">
-    <table class="table table-hover">
+    <a href="#" class="btn btn-primary">Thêm mới sản phẩm</a>
+    <table class="table">
         <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Category</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-            </tr>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">name</th>
+            <th scope="col">price</th>
+            <th scope="col">quantity</th>
+            <th scope="col">image</th>
+            <th scope="col">category name</th>
+            <th scope="col">Thao tác</th>
+        </tr>
         </thead>
+{{--        @dd($listPro)--}}
         <tbody>
-            @foreach ($products as $key => $product)
-            <tr>
-                <th scope="row">{{$key+1}}</th>
-                <td>{{$product->name}}</td>
-                <td>{{$product->category_id}}</td>
-                <td>{{$product->price}}</td>
-                <td>{{$product->quantity}}</td>
-            </tr>
-            @endforeach
+        @foreach($listPro as $item)
+        <tr>
+            <td>{{$item->id}}</td>
+            <td>{{$item->name}}</td>
+            <td>{{$item->price}}</td>
+            <td>{{$item->quantity}}</td>
+            <td>
+                @if(!isset($item->image))
+                    Không có ảnh
+                @else
+                    <img src="{{$item->image}}">
+                @endif
+            </td>
+            <td>{{$item->listCate->name}}</td>
+            <td>
+                <button type="button" class="btn btn-danger">Xóa</button>
+                <button type="button" class="btn btn-warning">Sửa</button>
+            </td>
+        </tr>
+        @endforeach
         </tbody>
     </table>
-</div>
-
+    {{$listPro->links()}}
 @endsection
