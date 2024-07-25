@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255)->comment('Tên sản phẩm');
-            $table->integer('price');
-            $table->integer('quantity');
-            $table->string('image', 255);
-            $table->foreignId('category_id')->constrained();
-            $table->tinyInteger('status')->default(1)->nullable();
+            $table->foreignIdFor(Category::class)->constrained();
+            $table->string('sku', 8)->unique();
+            $table->string('name', 50);
+            $table->string('image')->nullable();
+            $table->double('price', 10, 2);
+            $table->unsignedBigInteger('quantity')->default(0);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
