@@ -15,10 +15,10 @@ class CategorySeeder extends Seeder
     {
         //
         $cateSeed = [];
-        for ($i = 1; $i <= 10; $i++ ){
+        for($i = 1; $i <=10; $i++){
             $cateSeed[] = [
-                'name' => "Danh mục số ".$i,
-                'status' => 1
+                'name' => "Danh mục số ". $i,
+                'status' =>1
             ];
         }
         DB::table('categories')->insert($cateSeed);

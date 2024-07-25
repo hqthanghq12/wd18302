@@ -9,11 +9,24 @@ class Category extends Model
 {
     use HasFactory;
     protected $table = 'categories';
+
     protected $fillable = [
         'id',
         'name',
         'status',
         'created_at',
-        'update_at'
+        'updated_at'
     ];
+
+    public function loadAllDataCategory(){
+        $query = Category::query()->get();
+
+        return $query;
+    }
+
+    public function loadAllDataCategoryWithPager(){
+        $query = Category::query()->latest('id')->paginate();
+
+        return $query;
+    }
 }
