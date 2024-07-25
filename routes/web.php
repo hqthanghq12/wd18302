@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
 use \App\Http\Controllers\ProductController;
+use \App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,5 +57,20 @@ Route::get('/posts', function () {
     dd($data);
 //    return view('welcome');
 });
-Route::get('/products', [ProductController::class, 'index'])
-    ->name('products.index');
+route::controller(ProductController::class)->name('products.')->prefix('products/')->group(function(){
+    route::get('/','index')->name('index');
+    route::get('/create','create')->name('create');
+    route::post('/store','store')->name('store');
+    route::get('/{id}/edit','edit')->name('edit')->where('id','[0-9]+');
+    route::put('/{id}/update','update')->name('update')->where('id','[0-9]+');
+    route::delete('/{id}/destroy','destroy')->name('destroy')->where('id','[0-9]+');
+});
+
+route::controller(CategoryController::class)->name('cate.')->prefix('cate/')->group(function(){
+    route::get('/','index')->name('index');
+    route::get('/create','create')->name('create');
+    route::post('/store','store')->name('store');
+    route::get('/{id}/edit','edit')->name('edit')->where('id','[0-9]+');
+    route::put('/{id}/update','update')->name('update')->where('id','[0-9]+');
+    route::delete('/{id}/destroy','destroy')->name('destroy')->where('id','[0-9]+');
+});
