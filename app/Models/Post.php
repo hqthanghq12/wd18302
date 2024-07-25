@@ -11,11 +11,4 @@ class Post extends Model
 
     protected $fillable = ['title', 'content'];
 
-    // Đổi Pkey cho bảng
-    // protected $primaryKey = 'Sku';
-    // Đổi tên bảng
-    // protected $table = 'posts';
-    // protected $keyType = 'string';
-    // public $incrementing = false;
-
 }

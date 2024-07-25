@@ -4,6 +4,7 @@
 <a href="{{ route('products.create') }}" class="btn btn-primary">Thêm mới sản phẩm</a>
 <table class="table">
     <thead>
+
         <tr>
             <th scope="col">id</th>
             <th scope="col">name</th>
@@ -25,6 +26,7 @@
                 <img src="{{ $item->image }}" alt="" style="width: 100px">
             </td>
             <td>{{ $item->category->name }}</td>
+
             <td>
                 <button type="button" class="btn btn-danger">Xóa</button>
                 <button type="button" class="btn btn-warning">Sửa</button>
