@@ -2,73 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    private $view;
-    public function __construct()
-    {
-        $this->view = [];
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $objPro = new Product();
-        $this->view['listPro'] = $objPro->loadAllDataProductWithPager();
-//        dd($this->view['listPro']);
+    private $view = [];
+    public function index(){
+        $this->view['products'] = Product::all();
         return view('product.index', $this->view);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function create(){
+        $cateModel = new Category();
+        $this->view['categories'] = $cateModel->getAll();
+        return view('product.create', $this->view);
     }
+    public function store(Request $request){
+        $validate = Validator::make($request->all(), [
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'required|image',
+        ],[
+            'name.required' => 'Name is required',
+            'price.required' => 'Price is required',
+            'price.numeric' => 'Price must be a number',
+            'quantity.required' => 'Quantity is required',
+            'quantity.integer' => 'Quantity must be a number',
+            'category_id.required' => 'Category is required',
+            'category_id.exists' => 'Category not exists',
+            'image.required' => 'Image is required',
+            'image.image' => 'Image must be a image',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if($validate->fails()){
+            return redirect()->back()->withErrors($validate)->withInput($request->all())->with('messageBack', 'Create product fail');
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('product.index')->with('message', 'Create product success');
     }
 }

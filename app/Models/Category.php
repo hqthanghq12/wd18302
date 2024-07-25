@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-    protected $table = 'categories';
+
     protected $fillable = [
-        'id',
         'name',
-        'status',
-        'created_at',
-        'update_at'
     ];
+
+    public function getAll(){
+        return Category::all();
+    }
 }

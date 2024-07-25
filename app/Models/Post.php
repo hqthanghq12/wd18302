@@ -8,16 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
-//    protected $table="Tên bảng";
-//    // Dổi Pkey cho bang
-//    protected $primaryKey = "tên khóa chính khác vs id";
-//    protected $keyType = "Kieu du kieu cua khoa chinh";
-//    public $incrementing = false; // tắt trang thái tăng tự
-//    // Động cho khóa chính
-//    protected $connection = "tên db mơi";
-// Mac dinh gan
+    // protected $table = 'posts';
+
     protected $fillable = [
         'title',
-        'content'
-    ] ;
+        'content',
+    ];
+    protected $hidden = [
+        'title'
+    ];
+
+    // đổi primary key mặc định từ id sang sku
+    protected $primaryKey = 'sku';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    // protected $connection = 'mysql';
+
 }

@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Models\Post;
-use \App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,46 +16,35 @@ use \App\Http\Controllers\ProductController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('product.index');
 });
-Route::get('/posts', function () {
-    // truy vấn
-    // Lấy tất cả
-//    $data = Post::all();
-    // c2
-    $data = Post::query()->get();
-    // where
-    $data = Post::query()
-        ->where('id', '>=', 1)
-        ->get();
-    // Them
-    // C1
-//        $post = new Post();
-//        $post->title = "BV 2";
-//        $post->content = "ND BV so 2";
-//        $post->save();
-//        C2
-//    $post = Post::query()->create([
-//        'title' => "BV so 3",
-//        'content' => "ND BV so 3",
-//        'name' => "Nguyen Van A"
-//    ]);
-    // Sua
-    // C1
-//    $post = Post::query()->find(1);
-//    $post->title = "BV 2";
-//    $post->save();
-//    C2
-    $post = Post::query()->find(1)
-        ->update([
-            'title' => "BV so 3",
-            'content' => "ND BV so 3"
-        ]);
-    // Xoa
-//  Cung
-    $post = Post::query()->find(1)->delete();
-    dd($data);
-//    return view('welcome');
-});
-Route::get('/products', [ProductController::class, 'index'])
-    ->name('products.index');
+
+Route::controller(ProductController::class)
+    ->name('product.')
+    ->prefix('product')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+
+        Route::get('/edit/{id}', 'edit')->name('edit')->where('id', '[0-9]+');
+        Route::patch('/update/{id}', 'update')->name('update')->where('id', '[0-9]+');
+
+        Route::delete('/delete/{id}', 'delete')->name('delete')->where('id', '[0-9]+');
+    });
+
+Route::controller(CategoryController::class)
+    ->name('category.')
+    ->prefix('category')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+
+        Route::get('/edit/{id}', 'edit')->name('edit')->where('id', '[0-9]+');
+        Route::patch('/update/{id}', 'update')->name('update')->where('id', '[0-9]+');
+
+        Route::delete('/delete/{id}', 'delete')->name('delete')->where('id', '[0-9]+');
+    });
