@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
+
 
 class CategoryController extends Controller
 {
+    protected $view =[];
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
         //
+        $objCate = new Category();
+        $this->view['listCate']= $objCate->loadAllDataCategory();
+        // dd($this->view['listPro']);
+        return view('category.index', $this->view);
     }
 
     /**
@@ -19,7 +27,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create', $this->view);
+        
     }
 
     /**
@@ -27,7 +36,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validate
+        $validate = $request->validate(
+            [
+                'name'=>['required','string','max:255',],
+            ],
+            [
+                'name.required'=>'Tên không được bỏ trống',
+                'name.string'=>'Tên phải là kiểu ký tự',
+                'name.max'=>'Tên không được quá 255 ký tự',
+            ]
+        );
     }
 
     /**
