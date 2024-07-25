@@ -1,27 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Product;
+use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
-    private $view;
-    public function __construct()
-    {
-        $this->view = [];
-    }
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $objPro = new Product();
-        $this->view['listPro'] = $objPro->loadAllDataProductWithPager();
-//        dd($this->view['listPro']);
-        return view('product.index', $this->view);
+        $listDanhMuc = Category::query()->get();
+        return view('admin.category.index', compact('listDanhMuc'));
     }
 
     /**
@@ -29,7 +22,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.category.create');
     }
 
     /**
@@ -37,7 +30,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate= $request->validate([
+        'name' =>'required|string|max:255',
+        ],
+        [   
+            'name.required' => 'Không được bỏ trống',
+            'name.string' => 'Sản phẩm phải là chuỗi',
+        ]);
+       Category::create($validate);
+       return redirect()->route('admin.category.index');
     }
 
     /**
