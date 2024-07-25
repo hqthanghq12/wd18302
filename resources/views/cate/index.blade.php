@@ -2,16 +2,15 @@
 @section('title')
 @endsection
 @section('content')
-<a href="{{route('products.create')}}" class="btn btn-primary mb-3">them</a>
+<a href="{{route('cate.create')}}" class="btn btn-primary mb-3">them</a>
 <table class="table table-bordered">
     <thead>
       <tr>
         <th scope="col">id</th>
         <th scope="col">Name</th>
-        <th scope="col">Price</th>
-        <th scope="col">quantity</th>
-        <th scope="col">image</th>
-        <th scope="col">category_name</th>
+        <th scope="col">Status</th>
+        <th scope="col">Thời gian tạo</th>
+        <th scope="col">Thời gian cập nhập</th>
         <th scope="col">thao tac</th>
       </tr>
     </thead>
@@ -21,10 +20,9 @@
       <tr>
         <td>{{$key+1}}</td>
         <td >{{$item->name}}</td>
-        <td >{{$item->price}}</td>
-        <td >{{$item->quantity}}</td>
-        <td >{{$item->image}}</td>
-        <td >{{$item->listCate->name}}</td>
+        <td >{!!$item->status==1?'<button class="btn btn-success">Kích hoạt</button>':'<button class="btn btn-warning">Chưa kích hoạt</button>'!!}</td>
+        <td >{{$item->created_at}}</td>
+        <td >{{$item->updated_at}}</td>
         <td >
            <a href="" class="btn btn-warning">Sua</a> 
            <a href="" class="btn btn-danger">Xoa</a> 

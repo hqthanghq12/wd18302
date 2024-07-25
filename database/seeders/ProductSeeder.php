@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
                 'name' => "Sản phẩm ".$i,
                 'price' => rand(1000, 10000),
                 'quantity' => rand(10, 100),
-                'image' => null,
+                'image' => 'Khong co',
                 'category_id' => rand(1, 10),
                 'status' => 1
             ];
