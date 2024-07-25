@@ -8,8 +8,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    private $view;
-    
+    private $view; 
     public function __construct() {
       $this->view = [];
     }
@@ -35,6 +34,7 @@ class ProductController extends Controller
         $this->view['listCate']= $objCate->loadAllDataCategory();
         //dd($this->view['listCate']);
         return view('product.create', $this->view);
+
     }
 
     /**
@@ -74,6 +74,7 @@ class ProductController extends Controller
             ]
         );
         //dd($request->all());
+
     }
 
     /**
