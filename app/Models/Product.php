@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    protected $table = 'products';
+
     protected $fillable = [
         'id',
         'name',
@@ -17,19 +17,16 @@ class Product extends Model
         'image',
         'category_id',
         'status',
-        'created_at',
-        'update_at'
     ];
-    public function listCate(){
+    public function listCatagory(){
         return $this->belongsTo(Category::class, 'category_id');
     }
-    public function loadAllDataProductWithPager(){
+    public function loadAllDataProPage(){
         // ORM
         $query = Product::query()
-            ->with('listCate')
-            ->latest('id')
-            ->paginate(10);
+        ->with('listCatagory')
+        ->latest('id')
+        ->paginate(10);
         return $query;
-
     }
 }
