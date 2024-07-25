@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
-use \App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,7 +56,49 @@ Route::get('/posts', function () {
 //  Cung
     $post = Post::query()->find(1)->delete();
     dd($data);
-//    return view('welcome');
+    //    return view('welcome');
 });
-Route::get('/products', [ProductController::class, 'index'])
-    ->name('products.index');
+// Route::get('/products', [ProductController::class, 'index'])
+//     ->name('products.index');
+// Route::get('/products/create', [ProductController::class, 'create'])
+//     ->name('products.create');
+// Route::post('/products/store', [ProductController::class, 'store'])
+//     ->name('products.store');
+
+
+// 
+Route::controller(ProductController::class)
+    ->name('products.')
+    ->prefix('products/')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')
+            ->name('edit')
+            ->where('id', '[0-9]+');
+        Route::put('/{id}/update', 'update')
+            ->name('update')
+            ->where('id', '[0-9]+');
+        Route::delete('/{id}/destroy', 'destroy')
+            ->name('destroy')
+            ->where('id', '[0-9]+');
+    });
+
+    Route::controller(CategoryController::class)
+    ->name('categories.')
+    ->prefix('categories/')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')
+            ->name('edit')
+            ->where('id', '[0-9]+');
+        Route::put('/{id}/update', 'update')
+            ->name('update')
+            ->where('id', '[0-9]+');
+        Route::delete('/{id}/destroy', 'destroy')
+            ->name('destroy')
+            ->where('id', '[0-9]+');
+    });
