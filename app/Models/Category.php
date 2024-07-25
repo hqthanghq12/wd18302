@@ -10,10 +10,15 @@ class Category extends Model
     use HasFactory;
     protected $table = 'categories';
     protected $fillable = [
-        'id',
-        'name',
-        'status',
-        'created_at',
-        'update_at'
+        'categories.id',
+        'categories.name',
+        'categories.status',
+        'categories.created_at',
+        'categories.update_at'
     ];
+
+    public function loadAllDataCategory(){
+        $query = Category::query()->get();
+        return $query;
+    }
 }
