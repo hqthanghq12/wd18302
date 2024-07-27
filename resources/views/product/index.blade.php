@@ -35,12 +35,17 @@
                 @if(!isset($item->image))
                     Không có ảnh
                 @else
-                    <img src="{{$item->image}}">
+                    <img src="{{Storage::url($item->image)}}" style="width: 100px">
                 @endif
             </td>
             <td>{{$item->listCate->name}}</td>
             <td>
-                <button type="button" class="btn btn-danger">Xóa</button>
+                <form action="{{route('products.destroy', ['id'=>$item->id])}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa???')" class="btn btn-danger">Xóa</button>
+                </form>
+
                 <button type="button" class="btn btn-warning">Sửa</button>
             </td>
         </tr>

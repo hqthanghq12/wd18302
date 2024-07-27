@@ -38,4 +38,14 @@ class Product extends Model
         $res = Product::query()->create($params);
         return $res;
     }
+    public function loadIdDataProduct($id){
+        $query = Product::query()->find($id);
+        return $query;
+    }
+    public function deleteDataProduct($id){
+        $query = Product::query()
+            ->find($id)
+            ->delete();
+        return $query;
+    }
 }

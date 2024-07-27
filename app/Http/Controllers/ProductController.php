@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -108,8 +109,27 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         //
+//        dd($id);
+        $objPro = new Product();
+        $idCheck = $objPro->loadIdDataProduct($id);
+        $imgOld = $idCheck->image;
+        if($idCheck){
+            $res = $objPro->deleteDataProduct($id);
+            if($res){
+                if(isset($imgOld)){
+                    if(Storage::disk('public')->exists($imgOld)){
+                        Storage::disk('public')->delete($imgOld);
+                    }
+                }
+                return redirect()->back()->with('success', 'Sản phẩm xóa thành công!');
+            }else{
+                return redirect()->back()->with('error', 'Sản phẩm xóa không thành công!');
+            }
+        }else{
+            return redirect()->back()->with('error', 'Sản phẩm không tồn tại!');
+        }
     }
 }
