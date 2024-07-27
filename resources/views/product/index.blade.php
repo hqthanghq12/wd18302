@@ -3,7 +3,14 @@
     Danh sách sản phẩm
 @endsection
 @section('content')
-    <a href="#" class="btn btn-primary">Thêm mới sản phẩm</a>
+    @if(session('success'))
+        {{session('success')}}
+    @endif
+    @if(session('error'))
+        {{session('error')}}
+    @endif
+    <a href="{{route('products.create')}}"
+       class="btn btn-primary">Thêm mới sản phẩm</a>
     <table class="table">
         <thead>
         <tr>

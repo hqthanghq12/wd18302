@@ -16,4 +16,8 @@ class Category extends Model
         'created_at',
         'update_at'
     ];
+    public function loadAllDataCategory(){
+        $query = Category::query()->get();
+        return $query;
+    }
 }

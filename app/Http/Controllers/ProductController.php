@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductRequest;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -30,14 +32,53 @@ class ProductController extends Controller
     public function create()
     {
         //
+        $objCate = new Category();
+        $this->view['listCate'] = $objCate->loadAllDataCategory();
+//        dd($this->view['listCate']);
+        return view('product.create', $this->view);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    // pt upload file
+    private function uploadFile($file){
+        $fileName = time()."_".$file->getClientOriginalName();
+        return $file->storeAs('image_products', $fileName, 'public');
+    }
+    public function store(StoreProductRequest $request)
     {
-        //
+        //validate
+//        $validate = $request->validate(
+//            [
+//                'name'=>['required', 'string', 'max:255'],
+//                'price'=>['required', 'integer', 'min:1'],
+//                'quantity'=>['required', 'integer', 'min:1'],
+//                'image'=>['required', 'image', 'mimes:jpg, png, jpeg', 'max:2048'],
+//                'category_id'=>['required', 'exists:categories,id'],
+//            ],
+//            [
+//                'name.required' => 'Trường tên không được bỏ trống',
+//                'name.string' => 'Trường tên yêu bắt buộc là KDL ký tự',
+//                'name.max' => 'Trường tên không được vươợt quá 255 ký tự',
+//                // Lab 5
+//            ]
+//        );
+//        dd($request->all());
+//        dd($request->all());
+        // loại bỏ trường ảnh
+        $data = $request->except('image');
+        // Kiểm xem anh đã được upload thành công
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $data['image'] = $this->uploadFile($request->file('image'));
+        }
+        $objPro = new Product();
+        $res = $objPro->insertDataProduct($data);
+        if($res){
+            return redirect()->back()->with('success', 'Sản phẩm thêm mới thành công!');
+        }else{
+            return redirect()->back()->with('error', 'Sản phẩm thêm mới không thành công!');
+        }
     }
 
     /**
