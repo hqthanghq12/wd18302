@@ -115,15 +115,15 @@ class ProductController extends Controller
 //        dd($id);
         $objPro = new Product();
         $idCheck = $objPro->loadIdDataProduct($id);
-        $imgOld = $idCheck->image;
+//        $imgOld = $idCheck->image;
         if($idCheck){
             $res = $objPro->deleteDataProduct($id);
             if($res){
-                if(isset($imgOld)){
-                    if(Storage::disk('public')->exists($imgOld)){
-                        Storage::disk('public')->delete($imgOld);
-                    }
-                }
+//                if(isset($imgOld)){
+//                    if(Storage::disk('public')->exists($imgOld)){
+//                        Storage::disk('public')->delete($imgOld);
+//                    }
+//                }
                 return redirect()->back()->with('success', 'Sản phẩm xóa thành công!');
             }else{
                 return redirect()->back()->with('error', 'Sản phẩm xóa không thành công!');
