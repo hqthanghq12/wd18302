@@ -1,6 +1,6 @@
 @extends('layoutadmin')
 @section('title')
-    Thêm mới sản phẩm
+   <h2 class="text-center">Thêm mới Sản Phẩm</h2> 
 @endsection
 @section('content')
     @if ($errors->any())
@@ -35,6 +35,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Price</label>
+
             <input type="text"
                    class="form-control"
                    id="exampleFormControlInput1"

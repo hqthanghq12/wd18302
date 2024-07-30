@@ -22,17 +22,19 @@ class Product extends Model
         'created_at',
         'updated_at'
     ];
+
     public function listCate(){
         return $this->belongsTo(Category::class, 'category_id');
     }
-    public function loadAllDataProductWithPager(){
+
+    public function loadAllDataProductWithPager()
+    {
         // ORM
         $query = Product::query()
             ->with('listCate')
             ->latest('id')
             ->paginate(10);
         return $query;
-
     }
     public function insertDataProduct($params){
         $params['status'] = 1;

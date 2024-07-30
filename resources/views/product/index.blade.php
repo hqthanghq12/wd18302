@@ -1,6 +1,6 @@
 @extends('layoutadmin')
 @section('title')
-    Danh sách sản phẩm
+    Danh Sách Sản Phẩm
 @endsection
 @section('content')
     @if(session('success'))
@@ -13,20 +13,19 @@
        class="btn btn-primary">Thêm mới sản phẩm</a>
     <table class="table">
         <thead>
-        <tr>
+          <tr>
             <th scope="col">id</th>
-            <th scope="col">name</th>
-            <th scope="col">price</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
             <th scope="col">quantity</th>
             <th scope="col">image</th>
             <th scope="col">category name</th>
             <th scope="col">Thao tác</th>
-        </tr>
+          </tr>
         </thead>
-{{--        @dd($listPro)--}}
         <tbody>
-        @foreach($listPro as $item)
-        <tr>
+            @foreach ($listPro as $item) 
+          <tr>
             <td>{{$item->id}}</td>
             <td>{{$item->name}}</td>
             <td>{{$item->price}}</td>
@@ -46,11 +45,10 @@
                     <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa???')" class="btn btn-danger">Xóa</button>
                 </form>
                 <a class="btn btn-warning" href="{{route('products.edit', ['id'=> $item->id])}}">Sửa</a>
-
             </td>
-        </tr>
-        @endforeach
+          </tr> 
+          @endforeach
         </tbody>
-    </table>
-    {{$listPro->links()}}
+      </table>
+      {{$listPro->links()}}
 @endsection

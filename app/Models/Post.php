@@ -8,16 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
-//    protected $table="Tên bảng";
-//    // Dổi Pkey cho bang
-//    protected $primaryKey = "tên khóa chính khác vs id";
-//    protected $keyType = "Kieu du kieu cua khoa chinh";
-//    public $incrementing = false; // tắt trang thái tăng tự
-//    // Động cho khóa chính
-//    protected $connection = "tên db mơi";
-// Mac dinh gan
+
+    // protected $table = "posts";
+    //Đổi PK cho bảng
+    // protected $primaryKey = "ma" ;//tên khóa chính
+    // protected $keyType = "string";//kiểu dữ liệu của khóa chính
+    // public $incrementing = false; //tắt trạng thái tăng tự động cho khóa chính 
+    // protected $connection = "tên db";//thay đổi db
+
+    ///mặc định gán
     protected $fillable = [
         'title',
         'content'
-    ] ;
+    ];
 }
+

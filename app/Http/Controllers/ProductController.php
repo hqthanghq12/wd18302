@@ -10,20 +10,19 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    private $view;
-    public function __construct()
-    {
-        $this->view = [];
+    private $view; 
+    public function __construct() {
+      $this->view = [];
     }
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        //
         $objPro = new Product();
         $this->view['listPro'] = $objPro->loadAllDataProductWithPager();
-//        dd($this->view['listPro']);
+        // dd($this->view['listPro']);
         return view('product.index', $this->view);
     }
 
@@ -34,9 +33,10 @@ class ProductController extends Controller
     {
         //
         $objCate = new Category();
-        $this->view['listCate'] = $objCate->loadAllDataCategory();
-//        dd($this->view['listCate']);
+        $this->view['listCate']= $objCate->loadAllDataCategory();
+        //dd($this->view['listCate']);
         return view('product.create', $this->view);
+
     }
 
     /**
