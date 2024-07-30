@@ -20,7 +20,7 @@ class Product extends Model
         'category_id',
         'status',
         'created_at',
-        'update_at'
+        'updated_at'
     ];
     public function listCate(){
         return $this->belongsTo(Category::class, 'category_id');
@@ -49,5 +49,12 @@ class Product extends Model
             ->find($id)
             ->delete();
         return $query;
+    }
+    public function upadateDataProduct($params, $id){
+        $params['updated_at'] = date('Y-m-d H:i:s');
+        $res = Product::query()->find($id)->update($params);
+        return $res;
+
+
     }
 }
