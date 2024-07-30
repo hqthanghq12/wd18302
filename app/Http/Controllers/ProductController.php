@@ -93,9 +93,14 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int $id)
     {
         //
+        $objCate = new Category();
+        $this->view['listCate'] = $objCate->loadAllDataCategory();
+        $objPro = new Product();
+        $this->view['listPro'] = $objPro->loadIdDataProduct($id);
+        return view('product.edit', $this->view);
     }
 
     /**

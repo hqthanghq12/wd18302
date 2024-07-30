@@ -45,8 +45,8 @@
                     @method('DELETE')
                     <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa???')" class="btn btn-danger">Xóa</button>
                 </form>
+                <a class="btn btn-warning" href="{{route('products.edit', ['id'=> $item->id])}}">Sửa</a>
 
-                <button type="button" class="btn btn-warning">Sửa</button>
             </td>
         </tr>
         @endforeach
