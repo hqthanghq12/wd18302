@@ -3,7 +3,14 @@
     Danh Sách Sản Phẩm
 @endsection
 @section('content')
-    <a href="{{route('products.create')}}"><button type="button" class="btn btn-primary">Add</button></a>
+    @if(session('success'))
+        {{session('success')}}
+    @endif
+    @if(session('error'))
+        {{session('error')}}
+    @endif
+    <a href="{{route('products.create')}}"
+       class="btn btn-primary">Thêm mới sản phẩm</a>
     <table class="table">
         <thead>
           <tr>
@@ -24,16 +31,20 @@
             <td>{{$item->price}}</td>
             <td>{{$item->quantity}}</td>
             <td>
-                @if (!isset($item->image))
-                    khong co anh
-                    @else
-                    <img src="{{$item->image}}" alt="">
+                @if(!isset($item->image))
+                    Không có ảnh
+                @else
+                    <img src="{{Storage::url($item->image)}}" style="width: 100px">
                 @endif
             </td>
             <td>{{$item->listCate->name}}</td>
             <td>
-                <button type="button" class="btn btn-danger">Xóa</button>
-                <button type="button" class="btn btn-warning">Sửa</button>
+                <form action="{{route('products.destroy', ['id'=>$item->id])}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa???')" class="btn btn-danger">Xóa</button>
+                </form>
+                <a class="btn btn-warning" href="{{route('products.edit', ['id'=> $item->id])}}">Sửa</a>
             </td>
           </tr> 
           @endforeach

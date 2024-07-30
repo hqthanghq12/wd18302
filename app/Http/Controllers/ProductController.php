@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -40,41 +42,44 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    // pt upload file
+    private function uploadFile($file){
+        $fileName = time()."_".$file->getClientOriginalName();
+        return $file->storeAs('image_products', $fileName, 'public');
+    }
+    public function store(StoreProductRequest $request)
     {
         //validate
-        $validate = $request->validate(
-            [
-                'name'=>['required','string','max:255',],
-                'price'=>['required','integer','min:1'],
-                'quantity'=>['required','integer','min:1'],
-                'image'=>['required','image','mimes:jpg, png,jpeg','max:2048'],
-                'category_id'=>['required','exists:categories,id']
-            ],
-            [
-                'name.required'=>'Tên không được bỏ trống',
-                'name.string'=>'Tên phải là kiểu ký tự',
-                'name.max'=>'Tên không được quá 255 ký tự',
-                //lab5
-                'price.required' => 'Giá không được để trống',
-                'price.integer' => 'Giá phải là số nguyên',
-                'price.min' => 'Giá phải lớn hơn hoặc bằng 1',
-        
-                'quantity.required' => 'Số lượng không được để trống',
-                'quantity.integer' => 'Số lượng phải là số nguyên',
-                'quantity.min' => 'Số lượng phải lớn hơn hoặc bằng 1',
-        
-                'image.required' => 'Hình ảnh không được để trống',
-                'image.image' => 'File phải là hình ảnh',
-                'image.mimes' => 'Hình ảnh phải có định dạng jpg, png hoặc jpeg',
-                'image.max' => 'Hình ảnh không được lớn hơn 2048 KB',
-        
-                'category_id.required' => 'Danh mục không được để trống',
-                'category_id.exists' => 'Danh mục không hợp lệ',
-            ]
-        );
-        //dd($request->all());
-
+//        $validate = $request->validate(
+//            [
+//                'name'=>['required', 'string', 'max:255'],
+//                'price'=>['required', 'integer', 'min:1'],
+//                'quantity'=>['required', 'integer', 'min:1'],
+//                'image'=>['required', 'image', 'mimes:jpg, png, jpeg', 'max:2048'],
+//                'category_id'=>['required', 'exists:categories,id'],
+//            ],
+//            [
+//                'name.required' => 'Trường tên không được bỏ trống',
+//                'name.string' => 'Trường tên yêu bắt buộc là KDL ký tự',
+//                'name.max' => 'Trường tên không được vươợt quá 255 ký tự',
+//                // Lab 5
+//            ]
+//        );
+//        dd($request->all());
+//        dd($request->all());
+        // loại bỏ trường ảnh
+        $data = $request->except('image');
+        // Kiểm xem anh đã được upload thành công
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $data['image'] = $this->uploadFile($request->file('image'));
+        }
+        $objPro = new Product();
+        $res = $objPro->insertDataProduct($data);
+        if($res){
+            return redirect()->back()->with('success', 'Sản phẩm thêm mới thành công!');
+        }else{
+            return redirect()->back()->with('error', 'Sản phẩm thêm mới không thành công!');
+        }
     }
 
     /**
@@ -88,24 +93,74 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int $id)
     {
         //
+        $objCate = new Category();
+        $this->view['listCate'] = $objCate->loadAllDataCategory();
+        $objPro = new Product();
+        $this->view['listPro'] = $objPro->loadIdDataProduct($id);
+        return view('product.edit', $this->view);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
         //
+//        dd($request->all());
+        $objPro = new Product();
+        $checkId = $objPro->loadIdDataProduct($id);
+        $imageOld = $checkId->image;
+        if($checkId){
+            // loại bỏ trường ảnh
+            $data = $request->except('image');
+            // Kiểm xem anh đã được upload thành công
+            if($request->hasFile('image') && $request->file('image')->isValid()){
+                $data['image'] = $this->uploadFile($request->file('image'));
+                $flag = true;
+            }else{
+                $data['image'] = $imageOld;
+            }
+            $res = $objPro->upadateDataProduct($data, $id);
+            if($res){
+                    if(isset($imageOld) && Storage::disk('public')->exists($imageOld)){
+                       Storage::disk('public')->delete($imageOld);
+                    }
+                return redirect()->back()->with('success', 'Sản phẩm chỉnh sửa thành công!');
+            }else{
+                return redirect()->back()->with('error', 'Sản phẩm chỉnh sửa không thành công!');
+            }
+        }else{
+            return redirect()->back()->with('error', 'ID không chính xác!');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         //
+//        dd($id);
+        $objPro = new Product();
+        $idCheck = $objPro->loadIdDataProduct($id);
+//        $imgOld = $idCheck->image;
+        if($idCheck){
+            $res = $objPro->deleteDataProduct($id);
+            if($res){
+//                if(isset($imgOld)){
+//                    if(Storage::disk('public')->exists($imgOld)){
+//                        Storage::disk('public')->delete($imgOld);
+//                    }
+//                }
+                return redirect()->back()->with('success', 'Sản phẩm xóa thành công!');
+            }else{
+                return redirect()->back()->with('error', 'Sản phẩm xóa không thành công!');
+            }
+        }else{
+            return redirect()->back()->with('error', 'Sản phẩm không tồn tại!');
+        }
     }
 }

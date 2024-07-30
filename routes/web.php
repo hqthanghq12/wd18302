@@ -62,25 +62,27 @@ Route::get('posts/', function () {
     dd($data);
     // return view('welcome');
 });
-// Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-// Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+//Route::get('/products', [ProductController::class, 'index'])
+//    ->name('products.index');
+//Route::get('/products/create', [ProductController::class, 'create'])
+//    ->name('products.create');
 //
 Route::controller(ProductController::class)
     ->name('products.')
     ->prefix('products/')
-    ->group(function(){
-        Route::get('/','index')->name('index');
-        Route::get('/create','create')->name('create');
-        Route::post('/store','store')->name('store');
-        Route::get('/{id}/edit','edit')
-        ->name('edit')
-        ->where('id','[0-9]+');
-        Route::put('/{id}/update','update')
-        ->name('update')
-        ->where('id','[0-9]+');
-        Route::delete('/{id}/destroy','destroy')
-        ->name('destroy')
-        ->where('id','[0-9]+');
+   ->group(function (){
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')
+            ->name('edit')
+            ->where('id', '[0-9]+');
+        Route::put('/{id}/update', 'update')
+            ->name('update')
+            ->where('id', '[0-9]+');
+        Route::delete('/{id}/destroy', 'destroy')
+            ->name('destroy')
+            ->where('id', '[0-9]+');
     });
 
 //category

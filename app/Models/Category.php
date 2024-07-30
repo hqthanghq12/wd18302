@@ -12,7 +12,7 @@ class Category extends Model
     protected $fillable = [
         'id', 'name', 'status', 'created_at', 'updated_at'
     ];
-
+  
     public function loadAllDataCategory(){
         $query = Category::query()->get();
         return $query;
