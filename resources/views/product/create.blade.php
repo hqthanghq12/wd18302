@@ -25,7 +25,7 @@
             <input type="text" class="form-control" name="name"
                 value="{{ old('name') }}">
             @error('name')
-                <div class="alert alert-danger">{{ $message }}</div>
+            <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
         <div class="mb-3">
