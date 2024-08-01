@@ -41,7 +41,7 @@ class Product extends Model
         return $res;
     }
     public function loadIdDataProduct($id){
-        $query = Product::query()->find($id);
+        $query = Product::query()->with('listCate')->find($id);
         return $query;
     }
     public function deleteDataProduct($id){
