@@ -11,6 +11,10 @@
     @endif
     <a href="{{route('products.create')}}"
        class="btn btn-primary">Thêm mới sản phẩm</a>
+    <form action="{{route('logout')}}" method="POST">
+        @csrf
+        <button type="submit">Đăng Xuất</button>
+    </form>
     <table class="table">
         <thead>
         <tr>

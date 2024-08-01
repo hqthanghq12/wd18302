@@ -62,14 +62,22 @@ Route::get('/posts', function () {
 //Route::get('/products/create', [ProductController::class, 'create'])
 //    ->name('products.create');
 //
+
 Route::controller(UserController::class)
     ->group(function (){
         Route::get('/register', 'register')->name('register');
         Route::post('/register', 'postRegister')->name('postRegister');
     });
+Route::get('login', [UserController::class, 'login'])
+    ->name('login');
+Route::post('login', [UserController::class, 'postLogin'])
+    ->name('postLogin');
+Route::post('logout', [UserController::class, 'logout'])
+    ->name('logout');
 Route::controller(ProductController::class)
     ->name('products.')
     ->prefix('products/')
+    ->middleware('admin')
     ->group(function (){
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
