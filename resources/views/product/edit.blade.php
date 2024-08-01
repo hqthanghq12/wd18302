@@ -1,6 +1,6 @@
 @extends('layoutadmin')
 @section('title')
-    <h2 class="text-center">Thêm mới Sản Phẩm</h2>
+    <h2 class="text-center">Sửa Sản Phẩm</h2>
 @endsection
 @section('content')
     @if ($errors->any())
@@ -18,12 +18,13 @@
     @if (session('error'))
         {{ session('error') }}
     @endif
-    <form class="w-50" action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('products.update', ['id' => $listPro->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="mb-3">
             <label class="form-label">Name</label>
-            <input type="text" class="form-control" name="name"
-                value="{{ old('name') }}">
+            <input type="text" class="form-control" name="name" placeholder="Bánh Gạo"
+                value="{{ $listPro->name }}">
             @error('name')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
@@ -31,22 +32,23 @@
         <div class="mb-3">
             <label class="form-label">Price</label>
             <input type="text" class="form-control" name="price"
-                value="{{ old('price') }}">
+                value="{{ $listPro->price }}">
         </div>
         <div class="mb-3">
             <label class="form-label">Quantity</label>
             <input type="text" class="form-control" name="quantity"
-                value="{{ old('quantity') }}">
+                value="{{ $listPro->quantity }}">
         </div>
         <div class="mb-3">
             <label class="form-label">Image</label>
             <input type="file" class="form-control" name="image">
+            <img src="{{ Storage::url($listPro->image) }}" style="width: 100px">
         </div>
         <div class="mb-3">
             <label class="form-label">Category</label>
             <select class="form-select" name="category_id">
                 @foreach ($listCate as $item)
-                    <option value="{{ $item->id }}" @if ($item->id == old('category_id')) selected @endif>
+                    <option value="{{ $item->id }}" @if ($item->id == $listPro->category_id) selected @endif>
                         {{ $item->name }}</option>
                 @endforeach
             </select>

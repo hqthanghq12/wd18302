@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use \App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
 
@@ -64,7 +65,15 @@ Route::get('posts/', function () {
 });
 // Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 // Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-//
+
+//user
+Route::controller(UserController::class)
+    ->group(function (){
+        Route::get('/register', 'register')->name('register');
+        Route::post('/register', 'postRegister')->name('postRegister');
+    });
+
+//product
 Route::controller(ProductController::class)
     ->name('products.')
     ->prefix('products/')
